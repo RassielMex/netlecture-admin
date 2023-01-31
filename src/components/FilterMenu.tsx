@@ -3,14 +3,18 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import CheckIcon from "@mui/icons-material/Check";
 import React from "react";
 import { Box } from "@mui/system";
+import { useAppDispatch } from "../hooks/hooks";
+import { filterByGrade } from "../store/slices/books-slices";
 
 type Props = {};
 
 const FilterMenu = (props: Props) => {
+  const dispatch = useAppDispatch();
+
   const options = ["Todos", "Primero", "Segundo", "Tercero"];
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const open = Boolean(anchorEl);
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     //console.log(event.currentTarget);
@@ -23,6 +27,7 @@ const FilterMenu = (props: Props) => {
   ) => {
     setSelectedIndex(index);
     setAnchorEl(null);
+    dispatch(filterByGrade(index));
   };
 
   const handleClose = () => {

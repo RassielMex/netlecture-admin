@@ -18,6 +18,13 @@ export enum requestType {
   "NULL",
 }
 
+export enum grado {
+  "PRIMERO",
+  "SEGUNDO",
+  "TERCERO",
+  "TODOS",
+}
+
 // Define a type for the slice state
 interface BooksState {
   books: IBook[];
@@ -78,6 +85,34 @@ export const BooksSlice = createSlice({
         state.booksFiltered = state.books.slice();
       }
     },
+    filterByGrade: (state, action: PayloadAction<number>) => {
+      let grado = "TODOS";
+      switch (action.payload) {
+        case 0:
+          grado = "TODOS";
+          break;
+        case 1:
+          grado = "PRIMERO";
+          break;
+        case 2:
+          grado = "SEGUNDO";
+          break;
+        case 3:
+          grado = "TERCERO";
+          break;
+        default:
+          break;
+      }
+      //console.log(grado);
+      if (grado !== "TODOS") {
+        const newBookArr = state.books.filter((book) => {
+          return book.grado.toUpperCase() === grado;
+        });
+        state.booksFiltered = newBookArr.slice();
+      } else {
+        state.booksFiltered = state.books.slice();
+      }
+    },
   },
 });
 
@@ -124,7 +159,13 @@ export const onDelete = (id: string) => {
   };
 };
 
-export const { onRequest, onFailed, onSuccess, replaceBooks, filterByTitle } =
-  BooksSlice.actions;
+export const {
+  onRequest,
+  onFailed,
+  onSuccess,
+  replaceBooks,
+  filterByTitle,
+  filterByGrade,
+} = BooksSlice.actions;
 
 export default BooksSlice.reducer;
