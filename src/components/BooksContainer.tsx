@@ -1,6 +1,7 @@
-import { CircularProgress, Container } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import { CircularProgress, Container, Fab } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { onRetrieve } from "../store/slices/books-slices";
 import BookItem from "./BookItem";
@@ -20,6 +21,8 @@ const BooksContainer = (props: Props) => {
     dispatch(onRetrieve());
   }, [dispatch]);
 
+  const handleAdd: MouseEventHandler = (event) => {};
+
   return (
     <Container>
       <Stack alignItems={"center"}>
@@ -33,6 +36,14 @@ const BooksContainer = (props: Props) => {
         )}
         {books.length === 0 && !loading && <>No hay resultados!!</>}
       </Stack>
+      <Fab
+        onClick={handleAdd}
+        color="primary"
+        aria-label="add"
+        sx={{ position: "fixed", bottom: "1rem", right: "1rem" }}
+      >
+        <Add />
+      </Fab>
     </Container>
   );
 };
