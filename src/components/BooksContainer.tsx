@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { CircularProgress, Container } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
@@ -12,6 +12,10 @@ const BooksContainer = (props: Props) => {
   const books = useAppSelector((state) => {
     return state.books.booksFiltered;
   });
+  const loading = useAppSelector((state) => {
+    return state.books.loading;
+  });
+
   useEffect(() => {
     dispatch(onRetrieve());
   }, [dispatch]);
@@ -22,6 +26,12 @@ const BooksContainer = (props: Props) => {
         {books.map((book, index) => {
           return <BookItem key={index} book={book} />;
         })}
+        {books.length === 0 && loading && (
+          <>
+            <CircularProgress />
+          </>
+        )}
+        {books.length === 0 && !loading && <>No hay resultados!!</>}
       </Stack>
     </Container>
   );
