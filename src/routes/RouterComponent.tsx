@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
+import AddBookContainer from "../components/AddBookContainer";
 import BooksContainer from "../components/BooksContainer";
 import EditBookContainer from "../components/EditBookContainer";
 import Login from "../views/Login";
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <BooksContainer /> },
       { path: "edit/:id", element: <EditBookContainer /> },
+      { path: "add", element: <AddBookContainer /> },
     ],
   },
   { path: "login", element: <Login /> },

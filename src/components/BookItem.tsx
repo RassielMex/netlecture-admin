@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { Stack } from "@mui/system";
 import { IBook } from "../models/Book";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   book: IBook;
@@ -23,6 +24,8 @@ const BookItem = (props: Props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const navigate = useNavigate();
+
   const limitString = (str: String, limit: number) => {
     if (limit > 3) {
       if (str.length > limit) {
@@ -30,6 +33,10 @@ const BookItem = (props: Props) => {
       }
     }
     return str;
+  };
+
+  const handleEdit: MouseEventHandler = () => {
+    navigate(`edit/${book.id}`);
   };
 
   return (
@@ -74,7 +81,7 @@ const BookItem = (props: Props) => {
           </Typography>
           <Rating name="read-only" value={book.calificacion} readOnly />
           <Stack direction={"row"} justifyContent="center">
-            <IconButton>
+            <IconButton onClick={handleEdit}>
               <EditIcon />
             </IconButton>
             <IconButton color="error">

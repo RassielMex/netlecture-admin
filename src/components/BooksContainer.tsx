@@ -2,6 +2,7 @@ import { Add } from "@mui/icons-material";
 import { CircularProgress, Container, Fab } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { MouseEventHandler, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { onRetrieve } from "../store/slices/books-slices";
 import BookItem from "./BookItem";
@@ -21,7 +22,10 @@ const BooksContainer = (props: Props) => {
     dispatch(onRetrieve());
   }, [dispatch]);
 
-  const handleAdd: MouseEventHandler = (event) => {};
+  const navigate = useNavigate();
+  const handleAdd: MouseEventHandler = () => {
+    navigate("add", { replace: false });
+  };
 
   return (
     <Container>

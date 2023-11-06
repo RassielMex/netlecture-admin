@@ -2,7 +2,7 @@ import { AppBar, IconButton, Toolbar } from "@mui/material";
 import { Stack } from "@mui/system";
 import LogoutIcon from "@mui/icons-material/Logout";
 import React, { MouseEventHandler } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FilterMenu from "./FilterMenu";
 import SearchBar from "./SearchBar";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
@@ -13,11 +13,14 @@ type Props = {};
 const MainAppBar = (props: Props) => {
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLogOut: MouseEventHandler = () => {
     dispatch(logOut());
   };
-
+  const handleReturn: MouseEventHandler = () => {
+    navigate("/", { replace: true });
+  };
   return (
     <AppBar position="static">
       <Toolbar>
@@ -45,6 +48,7 @@ const MainAppBar = (props: Props) => {
             </>
           ) : (
             <IconButton
+              onClick={handleReturn}
               sx={{
                 border: "solid 1px",
                 borderRadius: "4px",
