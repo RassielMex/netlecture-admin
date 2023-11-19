@@ -3,26 +3,15 @@ import { Box } from "@mui/system";
 import React from "react";
 import LoginForm from "../components/LoginForm";
 
-const backImg = require("../img/image.png");
-
 type Props = {};
 
 const Login = (props: Props) => {
   return (
-    <Box
-      sx={{
-        backgroundImage: `url(${backImg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        width: "100wv",
-        height: "100vh",
-        margin: 0,
-      }}
-    >
-      <Stack alignItems="center" justifyContent="center" height="100%">
+    <div className="w-screen h-screen bg-login-gradient bg-no-repeat bg-cover">
+      <div className="flex flex-col justify-center items-center h-full">
         <LoginForm />
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 };
 

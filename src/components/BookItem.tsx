@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import { Stack } from "@mui/system";
 import { IBook } from "../models/Book";
 import { useNavigate } from "react-router-dom";

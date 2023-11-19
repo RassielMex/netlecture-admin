@@ -1,24 +1,16 @@
-import {
-  Button,
-  Paper,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { Stack } from "@mui/system";
-import React, { FormEvent, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { User } from "../models/User";
 import { onLogin } from "../store/slices/login-slice";
 import { RootState } from "../store/store";
+import { FormEvent, useRef } from "react";
+import { Button, Label, TextInput } from "flowbite-react";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state: RootState) => {
@@ -49,68 +41,44 @@ const LoginForm = (props: Props) => {
       {isLoggedIn ? (
         <Navigate to={"/"} replace />
       ) : (
-        <Paper
-          variant="elevation"
-          elevation={10}
-          sx={{
-            width: `${isMobile ? "240px" : "300px"}`,
-            padding: "24px",
-            height: `${isMobile ? "260px" : "320px"}`,
-          }}
-        >
-          <Stack direction={"column"} justifyContent="center" height="100%">
+        <div className="shadow-md min-w-max w-1/4 bg-white p-8 rounded-md">
+          <div className="flex flex-col justify-center h-full">
             <form onSubmit={handlerSubmit}>
-              <Typography
-                variant="h5"
-                marginBottom={"16px"}
-                color="#1976D2"
-                fontWeight={500}
-              >
+              <p className="text-2xl mb-4 text-sky-800 font-semibold text-center">
                 Ingrese su cuenta
-              </Typography>
-              <Stack spacing={4} alignItems="center">
-                <TextField
+              </p>
+              <div className="flex flex-col items-center gap-y-4">
+                <Label htmlFor="mail" value="Your email" className="w-full" />
+                <TextInput
                   id="mail"
-                  label="email"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  inputRef={emailRef}
+                  type="email"
+                  placeholder="name@gmail.com"
+                  required
+                  ref={emailRef}
+                  className="w-full"
                 />
-                <TextField
+                <Label
+                  htmlFor="password"
+                  value="Your password"
+                  className="w-full"
+                />
+                <TextInput
                   id="password"
-                  label="password"
-                  variant="outlined"
                   type="password"
-                  size="small"
-                  fullWidth
-                  inputRef={passwordRef}
+                  required
+                  ref={passwordRef}
+                  className="w-full"
                 />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  sx={{
-                    borderRadius: "16px",
-                  }}
-                >
+                <Button color="blue" type="submit" className="w-full">
                   Entrar
                 </Button>
-              </Stack>
+              </div>
             </form>
             {error && (
-              <Typography
-                variant="body2"
-                textAlign={"center"}
-                color="red"
-                marginTop="8px"
-              >
-                {errorMessage}
-              </Typography>
+              <p className="text-center text-red-600 mt-4">{errorMessage}</p>
             )}
-          </Stack>
-        </Paper>
+          </div>
+        </div>
       )}
     </>
   );
