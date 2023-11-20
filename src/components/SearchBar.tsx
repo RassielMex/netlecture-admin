@@ -1,8 +1,8 @@
-import { Search } from "@mui/icons-material";
-import { InputAdornment, TextField } from "@mui/material";
 import React, { ChangeEvent, ChangeEventHandler, useRef } from "react";
 import { useAppDispatch } from "../hooks/hooks";
 import { filterByTitle } from "../store/slices/books-slices";
+import { TextInput } from "flowbite-react";
+import { HiSearch } from "react-icons/hi";
 
 type Props = {};
 
@@ -16,40 +16,14 @@ const SearchBar = (props: Props) => {
     }
   };
   return (
-    <>
-      <TextField
-        inputRef={searchRef}
-        onChange={handleChange}
-        id="input-with-icon-textfield"
-        placeholder="Search"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search sx={{ color: "white" }} />
-            </InputAdornment>
-          ),
-        }}
-        sx={{
-          borderRadius: "8px",
-          input: { color: "white" },
-          backgroundColor: "rgba(240, 248, 255, 0.15)",
-          "& .MuiOutlinedInput-root": {
-            "& > fieldset": {
-              borderColor: "rgba(240, 248, 255, 0.15)",
-              borderRadius: "8px",
-            },
-          },
-          "& .MuiOutlinedInput-root:hover": {
-            "& > fieldset": {
-              border: "2px solid",
-              borderColor: "rgba(240, 248, 255, 0.5)",
-            },
-          },
-        }}
-        variant="outlined"
-        size="small"
-      />
-    </>
+    <TextInput
+      id="email4"
+      type="email"
+      icon={HiSearch}
+      placeholder="Search"
+      onChange={handleChange}
+      ref={searchRef}
+    />
   );
 };
 

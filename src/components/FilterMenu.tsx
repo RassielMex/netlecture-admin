@@ -1,76 +1,52 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import CheckIcon from "@mui/icons-material/Check";
 import React from "react";
-import { Box } from "@mui/system";
 import { useAppDispatch } from "../hooks/hooks";
 import { filterByGrade } from "../store/slices/books-slices";
+import { Checkbox, Dropdown, Label } from "flowbite-react";
+import { FunnelIcon } from "@heroicons/react/24/solid";
 
 type Props = {};
 
 const FilterMenu = (props: Props) => {
   const dispatch = useAppDispatch();
+  const options = ["Primero", "Segundo", "Tercero"];
+  let selectedOptions: string[] = [];
 
-  const options = ["Todos", "Primero", "Segundo", "Tercero"];
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = event.currentTarget;
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const open = Boolean(anchorEl);
-  const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
-    //console.log(event.currentTarget);
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuItemClick = (
-    _event: React.MouseEvent<HTMLElement>,
-    index: number
-  ) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-    dispatch(filterByGrade(index));
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
+    if (checked) {
+      selectedOptions.push(id);
+    } else {
+      selectedOptions = selectedOptions.filter((options) => options !== id);
+    }
+    console.log(selectedOptions);
+    //dispatch(filterByGrade(selectedOptions))
   };
 
   return (
     <>
-      <IconButton
-        onClick={handleButtonClick}
-        sx={{
-          border: "solid 1px",
-          borderRadius: "4px",
-          borderColor: "rgba(240, 248, 255, 0.15)",
-        }}
+      <Dropdown
+        label={<FunnelIcon className="h-5 w-5" />}
+        dismissOnClick={false}
+        color="blue"
       >
-        <FilterListIcon fontSize="small" sx={{ color: "white" }} />
-      </IconButton>
-      <Menu
-        id="lock-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "lock-button",
-          role: "listbox",
-        }}
-      >
-        {options.map((option, index) => (
-          <MenuItem
-            key={option}
-            selected={index === selectedIndex}
-            onClick={(event) => handleMenuItemClick(event, index)}
-          >
-            {index === selectedIndex ? (
-              <CheckIcon fontSize="small" sx={{ marginRight: "4px" }} />
-            ) : (
-              <Box sx={{ width: "24px" }} />
-            )}
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
+        {options.map((option, index) => {
+          return (
+            <Dropdown.Item
+              id={option}
+              key={index + option}
+              className="flex items-center gap-2"
+            >
+              <Checkbox
+                id={option}
+                defaultChecked={index === 0 ? true : false}
+                onChange={handleChange}
+              />
+              <Label htmlFor={option}>{option}</Label>
+            </Dropdown.Item>
+          );
+        })}
+      </Dropdown>
     </>
   );
 };

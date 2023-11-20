@@ -1,13 +1,14 @@
-import { AppBar, IconButton, Toolbar } from "@mui/material";
-import { Stack } from "@mui/system";
-import LogoutIcon from "@mui/icons-material/Logout";
-import React, { MouseEventHandler } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FilterMenu from "./FilterMenu";
 import SearchBar from "./SearchBar";
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { useAppDispatch } from "../hooks/hooks";
 import { logOut } from "../store/slices/login-slice";
+import { Button, Navbar } from "flowbite-react";
+import { MouseEventHandler } from "react";
+import {
+  ArrowLeftOnRectangleIcon,
+  ArrowUturnLeftIcon,
+} from "@heroicons/react/24/solid";
 type Props = {};
 
 const MainAppBar = (props: Props) => {
@@ -22,45 +23,26 @@ const MainAppBar = (props: Props) => {
     navigate("/", { replace: true });
   };
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="end"
-          alignItems="center"
-          width="100%"
-        >
+    <Navbar fluid className="bg-blue-600 mb-4">
+      <div className="flex justify-end w-full">
+        <Navbar.Toggle />
+        <Navbar.Collapse>
           {location.pathname === "/" ? (
             <>
               <SearchBar />
               <FilterMenu />
-              <IconButton
-                sx={{
-                  border: "solid 1px",
-                  borderRadius: "4px",
-                  borderColor: "rgba(240, 248, 255, 0.15)",
-                }}
-                onClick={handleLogOut}
-              >
-                <LogoutIcon fontSize="small" sx={{ color: "white" }} />
-              </IconButton>
+              <Button color="blue" onClick={handleLogOut}>
+                <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+              </Button>
             </>
           ) : (
-            <IconButton
-              onClick={handleReturn}
-              sx={{
-                border: "solid 1px",
-                borderRadius: "4px",
-                borderColor: "rgba(240, 248, 255, 0.15)",
-              }}
-            >
-              <KeyboardReturnIcon fontSize="small" sx={{ color: "white" }} />
-            </IconButton>
+            <Button color="blue" onClick={handleReturn}>
+              <ArrowUturnLeftIcon className="h-5 w-5" />
+            </Button>
           )}
-        </Stack>
-      </Toolbar>
-    </AppBar>
+        </Navbar.Collapse>
+      </div>
+    </Navbar>
   );
 };
 
