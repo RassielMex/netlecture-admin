@@ -13,6 +13,9 @@ module.exports = {
       backgroundImage: {
         "login-gradient": "url('/src/img/login-gradient.png')",
       },
+      width: {
+        500: "500px",
+      },
     },
   },
   plugins: [require("flowbite/plugin")],

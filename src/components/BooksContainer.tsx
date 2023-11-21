@@ -1,11 +1,10 @@
-import { Add } from "@mui/icons-material";
-import { CircularProgress, Container, Fab } from "@mui/material";
-import { Stack } from "@mui/system";
+import { MdOutlineAdd } from "react-icons/md";
 import React, { MouseEventHandler, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { onRetrieve } from "../store/slices/books-slices";
-import BookItem from "./BookItem";
+import BookTable from "./BookTable";
+import { Button, Spinner } from "flowbite-react";
 
 type Props = {};
 
@@ -28,27 +27,20 @@ const BooksContainer = (props: Props) => {
   };
 
   return (
-    <Container>
-      <Stack alignItems={"center"}>
-        {books.map((book, index) => {
-          return <BookItem key={index} book={book} />;
-        })}
-        {books.length === 0 && loading && (
-          <>
-            <CircularProgress />
-          </>
-        )}
-        {books.length === 0 && !loading && <>No hay resultados!!</>}
-      </Stack>
-      <Fab
+    <div className="container mx-auto">
+      <div className="flex flex-col align-center">
+        {loading ? <Spinner color="info" /> : <BookTable books={books} />}
+      </div>
+      <Button
         onClick={handleAdd}
-        color="primary"
-        aria-label="add"
-        sx={{ position: "fixed", bottom: "1rem", right: "1rem" }}
+        color="blue"
+        pill
+        className="fixed right-2 bottom-2"
       >
-        <Add />
-      </Fab>
-    </Container>
+        <MdOutlineAdd className="h-5 w-5 mr-1" />
+        Nuevo
+      </Button>
+    </div>
   );
 };
 

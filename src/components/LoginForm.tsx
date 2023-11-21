@@ -9,9 +9,6 @@ import { Button, Label, TextInput } from "flowbite-react";
 type Props = {};
 
 const LoginForm = (props: Props) => {
-  // const theme = useTheme();
-  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state: RootState) => {
     return state.login.isLoggedIn;
