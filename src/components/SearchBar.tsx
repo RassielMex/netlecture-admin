@@ -1,6 +1,5 @@
 import React, { ChangeEvent, ChangeEventHandler, useRef } from "react";
 import { useAppDispatch } from "../hooks/hooks";
-import { filterByTitle } from "../store/slices/books-slices";
 import { TextInput } from "flowbite-react";
 import { HiSearch } from "react-icons/hi";
 
@@ -12,7 +11,7 @@ const SearchBar = (props: Props) => {
 
   const handleChange: ChangeEventHandler = (event: ChangeEvent) => {
     if (searchRef.current) {
-      dispatch(filterByTitle(searchRef.current.value));
+      //dispatch(filterByTitle(searchRef.current.value));
     }
   };
   return (

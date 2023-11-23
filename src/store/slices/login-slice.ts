@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { User } from "../../models/User";
-import { app } from "../../services/firebase";
+
 import type { AppDispatch } from "../store";
+import axios from "axios";
 
 // Define a type for the slice state
 interface LoginState {
@@ -42,21 +42,15 @@ export const loginSlice = createSlice({
 
 // Other code such as selectors can use the imported `RootState` type
 export const onLogin = (user: User) => {
-  return (dispatch: AppDispatch) => {
-    const auth = getAuth(app);
-    const { email, password } = user;
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        //const _user = userCredential.user;
+  return async (dispatch: AppDispatch) => {
+    try {
+      const request = await axios.post("", user);
+      if ((request.status = 200)) {
         dispatch(logSuccess());
-        // ...
-      })
-      .catch((error) => {
-        //const errorCode = error.code;
-        const errorMessage = error.message;
-        dispatch(logError(errorMessage));
-      });
+      }
+    } catch (error) {
+      dispatch(logError("Error al intentar acceder"));
+    }
   };
 };
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { useAppDispatch } from "../hooks/hooks";
-import { filterByGrade } from "../store/slices/books-slices";
 import { Checkbox, Dropdown, Label } from "flowbite-react";
 import { FunnelIcon } from "@heroicons/react/24/solid";
 

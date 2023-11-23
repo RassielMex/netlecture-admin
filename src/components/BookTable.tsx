@@ -1,10 +1,10 @@
-import { IBook } from "../models/Book";
+import { BookFromAPI } from "../models/Book";
 import { useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 
 type Props = {
-  books: IBook[];
+  books: BookFromAPI[];
 };
 
 const BookTable = (props: Props) => {
@@ -40,10 +40,10 @@ const BookTable = (props: Props) => {
               scope="row"
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              {book.titulo}
+              {book.title}
             </th>
-            <td className="px-6 py-4">{book.autor}</td>
-            <td className="px-6 py-4">{book.calificacion}</td>
+            <td className="px-6 py-4">{book.author}</td>
+            <td className="px-6 py-4">{book.rate}</td>
             <td className="px-6 py-4 flex gap-x-2">
               <Button color="failure">
                 <MdDelete className="h-5 w-5" />

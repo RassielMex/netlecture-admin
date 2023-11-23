@@ -2,7 +2,7 @@ import { MdOutlineAdd } from "react-icons/md";
 import React, { MouseEventHandler, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { onRetrieve } from "../store/slices/books-slices";
+import { getBooks } from "../store/slices/books-slices";
 import BookTable from "./BookTable";
 import { Button, Spinner } from "flowbite-react";
 
@@ -10,15 +10,16 @@ type Props = {};
 
 const BooksContainer = (props: Props) => {
   const dispatch = useAppDispatch();
+
   const books = useAppSelector((state) => {
-    return state.books.booksFiltered;
+    return state.books.books;
   });
   const loading = useAppSelector((state) => {
     return state.books.loading;
   });
 
   useEffect(() => {
-    dispatch(onRetrieve());
+    dispatch(getBooks());
   }, [dispatch]);
 
   const navigate = useNavigate();

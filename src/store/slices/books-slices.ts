@@ -1,38 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IBook } from "../../models/Book";
-import { app } from "../../services/firebase";
+import { BookFromAPI, grade } from "../../models/Book";
 import type { AppDispatch } from "../store";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  getFirestore,
-} from "firebase/firestore";
-
-export enum requestType {
-  "DELETE",
-  "RETRIEVE",
-  "PATCH",
-  "CREATE",
-  "NULL",
-}
-
-export enum grado {
-  "PRIMERO",
-  "SEGUNDO",
-  "TERCERO",
-  "TODOS",
-}
+import axios from "axios";
 
 // Define a type for the slice state
 interface BooksState {
-  books: IBook[];
+  books: BookFromAPI[];
   loading: boolean;
   error: boolean;
   message: string;
-  booksFiltered: IBook[];
-  requestType: requestType;
+  filters: grade[];
 }
 
 // Define the initial state using that type
@@ -41,8 +18,7 @@ const initialState: BooksState = {
   loading: false,
   error: false,
   message: "",
-  booksFiltered: [],
-  requestType: requestType.NULL,
+  filters: [grade.First],
 };
 
 export const BooksSlice = createSlice({
@@ -50,90 +26,36 @@ export const BooksSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    onRequest: (state, action: PayloadAction<requestType>) => {
-      state.requestType = action.payload;
+    onRequest: (state) => {
       state.loading = true;
       state.message = "";
       state.error = false;
     },
-    onFailed: (
-      state,
-      action: PayloadAction<{ requestType: requestType; message: string }>
-    ) => {
-      state.requestType = action.payload.requestType;
+    onFailed: (state, action: PayloadAction<{ message: string }>) => {
       state.loading = false;
       state.message = action.payload.message;
       state.error = true;
     },
-    onSuccess: (state, action: PayloadAction<requestType>) => {
-      state.requestType = action.payload;
+    onSuccess: (state) => {
       state.loading = false;
       state.message = "";
       state.error = false;
     },
-    replaceBooks: (state, action: PayloadAction<IBook[]>) => {
+    replaceBooks: (state, action: PayloadAction<BookFromAPI[]>) => {
       state.books = action.payload.slice();
-      state.booksFiltered = action.payload.slice();
-    },
-    filterByTitle: (state, action: PayloadAction<string>) => {
-      if (action.payload.length > 0) {
-        state.booksFiltered = state.books.filter((book) => {
-          const searchStr = action.payload.toUpperCase().trim();
-          return book.titulo.toUpperCase().trim().includes(searchStr);
-        });
-      } else {
-        state.booksFiltered = state.books.slice();
-      }
-    },
-    filterByGrade: (state, action: PayloadAction<number>) => {
-      let grado = "TODOS";
-      switch (action.payload) {
-        case 0:
-          grado = "TODOS";
-          break;
-        case 1:
-          grado = "PRIMERO";
-          break;
-        case 2:
-          grado = "SEGUNDO";
-          break;
-        case 3:
-          grado = "TERCERO";
-          break;
-        default:
-          break;
-      }
-      //console.log(grado);
-      if (grado !== "TODOS") {
-        const newBookArr = state.books.filter((book) => {
-          return book.grado.toUpperCase() === grado;
-        });
-        state.booksFiltered = newBookArr.slice();
-      } else {
-        state.booksFiltered = state.books.slice();
-      }
     },
   },
 });
 
-export const onRetrieve = () => {
+export const getBooks = () => {
   return async (dispatch: AppDispatch) => {
-    dispatch(onRequest(requestType.RETRIEVE));
+    dispatch(onRequest());
     try {
-      const db = getFirestore(app);
-      const querySnapshot = await getDocs(collection(db, "Libros"));
-      if (!querySnapshot.empty) {
-        dispatch(onSuccess(requestType.RETRIEVE));
-        const dataArray: any = [];
-        querySnapshot.forEach((doc) => {
-          dataArray.push({ id: doc.id, ...doc.data() });
-        });
-        dispatch(replaceBooks(dataArray));
-      }
+      const { data } = await axios.get<BookFromAPI[]>("");
+      dispatch(replaceBooks(data));
     } catch (error: any) {
       dispatch(
         onFailed({
-          requestType: requestType.RETRIEVE,
           message: "Error al intentar cargar los datos",
         })
       );
@@ -143,15 +65,15 @@ export const onRetrieve = () => {
 
 export const onDelete = (id: string) => {
   return async (dispatch: AppDispatch) => {
+    dispatch(onRequest());
     try {
-      dispatch(onRequest(requestType.DELETE));
-      const db = getFirestore(app);
-      await deleteDoc(doc(db, "Libros", id));
-      dispatch(onSuccess(requestType.DELETE));
+      const request = await axios.delete("");
+      if (request.status === 400) {
+        dispatch(onSuccess());
+      }
     } catch (error) {
       dispatch(
         onFailed({
-          requestType: requestType.DELETE,
           message: "Error: No se eliminó el elemento",
         })
       );
@@ -159,13 +81,7 @@ export const onDelete = (id: string) => {
   };
 };
 
-export const {
-  onRequest,
-  onFailed,
-  onSuccess,
-  replaceBooks,
-  filterByTitle,
-  filterByGrade,
-} = BooksSlice.actions;
+export const { onRequest, onFailed, onSuccess, replaceBooks } =
+  BooksSlice.actions;
 
 export default BooksSlice.reducer;

@@ -9,12 +9,12 @@ import {
 } from "flowbite-react";
 import { FaBook } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
-import { IBook } from "../models/Book";
+import { BookFromAPI } from "../models/Book";
 
 const notFoundImg = require("../img/notfound.png");
 
 type Props = {
-  book?: IBook;
+  book?: BookFromAPI;
 };
 
 const BookForm = (props: Props) => {
