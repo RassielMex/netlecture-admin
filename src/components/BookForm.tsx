@@ -9,12 +9,15 @@ import {
 } from "flowbite-react";
 import { FaBook } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
+import { IBook } from "../models/Book";
 
 const notFoundImg = require("../img/notfound.png");
 
-type Props = {};
+type Props = {
+  book?: IBook;
+};
 
-const EditBookContainer = (props: Props) => {
+const BookForm = (props: Props) => {
   const [filled, setFilled] = useState([true, false, false, false, false]);
   const [countOnFirstStar, setCountOnFirstStar] = useState(0);
   const handleEnter = (event: MouseEvent<SVGSVGElement>) => {
@@ -115,4 +118,4 @@ const EditBookContainer = (props: Props) => {
   );
 };
 
-export default EditBookContainer;
+export default BookForm;
