@@ -12,9 +12,13 @@ module.exports = {
       },
       backgroundImage: {
         "login-gradient": "url('/src/img/login-gradient.png')",
+        "not-found": "url('/src/img/notfound.png')",
       },
       width: {
-        500: "500px",
+        128: "32rem",
+      },
+      height: {
+        128: "32rem",
       },
     },
   },
