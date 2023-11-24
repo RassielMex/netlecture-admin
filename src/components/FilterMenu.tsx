@@ -10,7 +10,7 @@ type Props = {};
 const FilterMenu = (props: Props) => {
   const dispatch = useAppDispatch();
   const options = [grade.First, grade.Second, grade.Third];
-  let selectedOptions: grade[] = [];
+  let selectedOptions: grade[] = [grade.First];
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
@@ -20,6 +20,7 @@ const FilterMenu = (props: Props) => {
       dispatch(setFilters(selectedOptions));
     } else {
       selectedOptions = selectedOptions.filter((options) => options !== id);
+      dispatch(setFilters(selectedOptions));
     }
     //console.log(selectedOptions);
     //dispatch(filterByGrade(selectedOptions))
