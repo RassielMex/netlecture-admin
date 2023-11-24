@@ -2,23 +2,26 @@ import React from "react";
 import { useAppDispatch } from "../hooks/hooks";
 import { Checkbox, Dropdown, Label } from "flowbite-react";
 import { FunnelIcon } from "@heroicons/react/24/solid";
+import { grade } from "../models/Book";
+import { setFilters } from "../store/slices/books-slice";
 
 type Props = {};
 
 const FilterMenu = (props: Props) => {
   const dispatch = useAppDispatch();
-  const options = ["Primero", "Segundo", "Tercero"];
-  let selectedOptions: string[] = [];
+  const options = [grade.First, grade.Second, grade.Third];
+  let selectedOptions: grade[] = [];
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
 
     if (checked) {
-      selectedOptions.push(id);
+      selectedOptions.push(id as grade);
+      dispatch(setFilters(selectedOptions));
     } else {
       selectedOptions = selectedOptions.filter((options) => options !== id);
     }
-    console.log(selectedOptions);
+    //console.log(selectedOptions);
     //dispatch(filterByGrade(selectedOptions))
   };
 

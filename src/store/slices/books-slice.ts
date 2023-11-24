@@ -44,6 +44,9 @@ export const BooksSlice = createSlice({
     replaceBooks: (state, action: PayloadAction<BookFromAPI[]>) => {
       state.books = action.payload.slice();
     },
+    setFilters: (state, action: PayloadAction<grade[]>) => {
+      state.filters = action.payload.slice();
+    },
   },
 });
 
@@ -81,7 +84,7 @@ export const onDelete = (id: string) => {
   };
 };
 
-export const { onRequest, onFailed, onSuccess, replaceBooks } =
+export const { onRequest, onFailed, onSuccess, replaceBooks, setFilters } =
   BooksSlice.actions;
 
 export default BooksSlice.reducer;
