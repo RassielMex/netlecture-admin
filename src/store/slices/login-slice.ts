@@ -13,7 +13,7 @@ interface LoginState {
 
 // Define the initial state using that type
 const initialState: LoginState = {
-  isLoggedIn: false,
+  isLoggedIn: true,
   error: false,
   message: "",
 };

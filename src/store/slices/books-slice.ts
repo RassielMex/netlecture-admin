@@ -10,6 +10,7 @@ interface BooksState {
   error: boolean;
   message: string;
   filters: grade[];
+  detailedBook: BookFromAPI | null;
 }
 
 // Define the initial state using that type
@@ -19,6 +20,7 @@ const initialState: BooksState = {
   error: false,
   message: "",
   filters: [grade.First],
+  detailedBook: null,
 };
 
 export const BooksSlice = createSlice({
@@ -47,6 +49,9 @@ export const BooksSlice = createSlice({
     setFilters: (state, action: PayloadAction<grade[]>) => {
       state.filters = action.payload.slice();
     },
+    replaceDetailedBook: (state, action: PayloadAction<BookFromAPI>) => {
+      state.detailedBook = action.payload;
+    },
   },
 });
 
@@ -54,14 +59,34 @@ export const getBooks = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(onRequest());
     try {
-      const { data } = await axios.get<BookFromAPI[]>("");
+      const { data } = await axios.get<BookFromAPI[]>(
+        "https://localhost:7009/api/books"
+      );
+      //console.log(data);
       dispatch(replaceBooks(data));
+      dispatch(onSuccess());
     } catch (error: any) {
       dispatch(
         onFailed({
           message: "Error al intentar cargar los datos",
         })
       );
+    }
+  };
+};
+
+export const getBookById = (id: string) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(onRequest());
+    try {
+      const { data } = await axios.get<BookFromAPI>(
+        `https://localhost:7009/api/books/${id}`
+      );
+      //console.log(data);
+      dispatch(replaceDetailedBook(data));
+      dispatch(onSuccess());
+    } catch (error) {
+      dispatch(onFailed({ message: "No data con el id proporcionado" }));
     }
   };
 };
@@ -84,7 +109,13 @@ export const onDelete = (id: string) => {
   };
 };
 
-export const { onRequest, onFailed, onSuccess, replaceBooks, setFilters } =
-  BooksSlice.actions;
+export const {
+  onRequest,
+  onFailed,
+  onSuccess,
+  replaceBooks,
+  setFilters,
+  replaceDetailedBook,
+} = BooksSlice.actions;
 
 export default BooksSlice.reducer;

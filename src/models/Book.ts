@@ -1,3 +1,6 @@
+import { IAuthor } from "./Author";
+import { IGenre } from "./Genre";
+
 export enum grade {
   First = "PRIMERO",
   Second = "SEGUNDO",
@@ -8,9 +11,10 @@ export interface IBook {
   id: string;
   title: string;
   grade: grade;
-  author: string;
-  review?: string;
-  rate?: number;
+  author: IAuthor;
+  summary?: string;
+  rate: number;
+  genre: IGenre;
 }
 
 export interface BookFromAPI extends IBook {
