@@ -2,7 +2,7 @@ import { MdOutlineAdd } from "react-icons/md";
 import React, { MouseEventHandler, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { getBooks } from "../store/slices/books-slice";
+import { emptyDetailedBook, getBooks } from "../store/slices/books-slice";
 import BookTable from "./BookTable";
 import { Button, Spinner } from "flowbite-react";
 
@@ -24,6 +24,7 @@ const BooksContainer = (props: Props) => {
 
   const navigate = useNavigate();
   const handleAdd: MouseEventHandler = () => {
+    dispatch(emptyDetailedBook());
     navigate("add", { replace: false });
   };
 

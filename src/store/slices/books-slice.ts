@@ -52,6 +52,9 @@ export const BooksSlice = createSlice({
     replaceDetailedBook: (state, action: PayloadAction<BookFromAPI>) => {
       state.detailedBook = action.payload;
     },
+    emptyDetailedBook: (state) => {
+      state.detailedBook = null;
+    },
   },
 });
 
@@ -116,6 +119,7 @@ export const {
   replaceBooks,
   setFilters,
   replaceDetailedBook,
+  emptyDetailedBook,
 } = BooksSlice.actions;
 
 export default BooksSlice.reducer;

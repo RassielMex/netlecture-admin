@@ -46,7 +46,7 @@ const BookTable = (props: Props) => {
               {book.title}
             </th>
             <td className="px-6 py-4">{book.author.name}</td>
-            <td className="px-6 py-4">{book.qualification}</td>
+            <td className="px-6 py-4">{book.rate}</td>
             <td className="px-6 py-4 flex gap-x-2">
               <Button color="failure">
                 <MdDelete className="h-5 w-5" />
