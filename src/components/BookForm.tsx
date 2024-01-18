@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Label, Select, TextInput, Textarea } from "flowbite-react";
+import {
+  Button,
+  Label,
+  Select,
+  TextInput,
+  Textarea,
+  ToggleSwitch,
+} from "flowbite-react";
 import { FaBook } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
@@ -12,6 +19,7 @@ import {
   getValidExtensions,
   isValidFileType,
 } from "../utils/ValidFileExtensions";
+import { IForm } from "../models/Form";
 
 const BookForm = () => {
   let { id } = useParams();
@@ -24,6 +32,9 @@ const BookForm = () => {
     return state.books.loading;
   });
   const [rateValue, setRateValue] = useState(book?.rate || 1);
+  const [selectedURLImage, setSelectedURLImage] = useState<string>(
+    book?.imgURL || ""
+  );
   const handleRateValueChange = (value: number) => {
     setRateValue(value);
   };
@@ -37,26 +48,28 @@ const BookForm = () => {
     }
   }, [id, dispatch]);
 
-  interface IForm {
-    title?: string;
-    author?: string;
-    summary?: string;
-    grade?: string;
-    image?: File;
-  }
-
   const validationSchema: Yup.Schema<IForm> = Yup.object({
-    title: Yup.string().required(),
-    author: Yup.string().required(),
-    summary: Yup.string().required().length(200),
+    title: Yup.string().required("El Titulo es requerido"),
+    author: Yup.string().required("El Autor es requerido"),
+    summary: Yup.string()
+      .optional()
+      .length(200, "Longitud debe ser menor a 200 caracteres"),
     grade: Yup.string().required(),
-    image: Yup.mixed<File>()
-      .test("File Type", "Tipo de Archivo Invalido", (val) => {
-        return val && isValidFileType(val?.name, "image");
-      })
-      .test("File Syze", "Tamaño debe ser meno a 5Mb", (val) => {
-        return val && val?.size < 5000000;
-      }),
+    enableImageUpload: Yup.boolean().required(),
+    image: Yup.mixed<File>().when("enableImageUpload", {
+      is: true,
+      then: (schema) =>
+        schema
+          .test("Selected File", "Selecciona una archivo", (val) => {
+            return val && val?.type.length > 0;
+          })
+          .test("File Type", "Tipo de Archivo Invalido", (val) => {
+            return val && isValidFileType(val?.name, "image");
+          })
+          .test("File Syze", "Tamaño debe ser menor a 5Mb", (val) => {
+            return val && val?.size < 5000000;
+          }),
+    }),
   });
 
   return (
@@ -68,6 +81,7 @@ const BookForm = () => {
             author: book?.author.name,
             summary: book?.summary,
             grade: book?.grade,
+            enableImageUpload: false,
             image: new File([], "image", { lastModified: 1 }),
           }}
           validationSchema={validationSchema}
@@ -80,11 +94,11 @@ const BookForm = () => {
             <div className="container mx-auto">
               <Form className="flex flex-col justify-center align-center gap-4 mb-8">
                 <section className="flex flex-col lg:flex-row justify-center align-center items-center gap-4 mb-8">
-                  {book?.imgURL ? (
+                  {selectedURLImage ? (
                     <img
                       className="w-full max-w-lg h-128"
                       alt="imagebook"
-                      src={book?.imgURL}
+                      src={selectedURLImage}
                     />
                   ) : (
                     <div className="w-full max-w-lg h-128 bg-not-found bg-no-repeat bg-contain bg-center"></div>
@@ -97,6 +111,9 @@ const BookForm = () => {
                       placeholder="El Quijote de la Mancha"
                       {...formik.getFieldProps("title")}
                     />
+                    {formik.touched.title && formik.errors.title && (
+                      <p className="text-red-500">{formik.errors.title}</p>
+                    )}
                     <Label htmlFor="author" value="Autor" />
                     <TextInput
                       id="author"
@@ -104,6 +121,9 @@ const BookForm = () => {
                       placeholder="Miguel de Cervantes"
                       {...formik.getFieldProps("author")}
                     />
+                    {formik.touched.author && formik.errors.author && (
+                      <p className="text-red-500">{formik.errors.author}</p>
+                    )}
                     <Label htmlFor="summary" value="Reseña" />
                     <Textarea
                       id="summary"
@@ -111,6 +131,9 @@ const BookForm = () => {
                       rows={4}
                       {...formik.getFieldProps("summary")}
                     />
+                    {formik.touched.summary && formik.errors.summary && (
+                      <p className="text-red-500">{formik.errors.summary}</p>
+                    )}
                     <Rate
                       onValueChange={handleRateValueChange}
                       initalValue={book?.rate || 1}
@@ -121,21 +144,45 @@ const BookForm = () => {
                       <option value={"Segundo"}>Segundo</option>
                       <option value={"Tercero"}>Tercero</option>
                     </Select>
-                    <Label htmlFor="image" value="Seleccione una imagen" />
-                    <input
-                      type="file"
-                      id="image"
-                      accept={getValidExtensions("image")}
-                      onChange={(e) => {
-                        if (e.currentTarget.files) {
-                          formik.setFieldValue(
-                            "image",
-                            e.currentTarget.files[0]
-                          );
-                        }
+                    {formik.touched.grade && formik.errors.grade && (
+                      <p className="text-red-500">{formik.errors.grade}</p>
+                    )}
+                    <ToggleSwitch
+                      id="enableImageUpload"
+                      label="Editar imagen"
+                      checked={formik.values.enableImageUpload}
+                      onChange={(checked) => {
+                        formik.setFieldValue("enableImageUpload", checked);
                       }}
                     />
-                    <p>{formik.errors.image}</p>
+                    <div
+                      className={`relative bg-gray-600 text-white rounded-md w-56 ${
+                        formik.values.enableImageUpload
+                          ? "visible"
+                          : "invisible"
+                      }`}
+                    >
+                      <span className="absolute left-0 top-0 w-full h-full flex justify-center items-center">
+                        Seleccione una imagen
+                      </span>
+                      <input
+                        className="opacity-0 w-full hover:cursor-pointer"
+                        disabled={!formik.values.enableImageUpload}
+                        type="file"
+                        id="image"
+                        accept={getValidExtensions("image")}
+                        onChange={(e) => {
+                          if (e.currentTarget.files) {
+                            let file = e.currentTarget.files[0];
+                            setSelectedURLImage(URL.createObjectURL(file));
+                            formik.setFieldValue("image", file);
+                          }
+                        }}
+                      />
+                    </div>
+                    {formik.touched.image && formik.errors.image && (
+                      <p className="text-red-500">{formik.errors.image}</p>
+                    )}
                   </div>
                 </section>
                 <section className="flex gap-4 justify-center w-full">
