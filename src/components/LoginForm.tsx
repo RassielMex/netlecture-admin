@@ -20,14 +20,14 @@ const LoginForm = (props: Props) => {
     return state.login.message;
   });
 
-  const emailRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const handlerSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (emailRef.current && passwordRef.current) {
+    if (usernameRef.current && passwordRef.current) {
       const user: User = {
-        email: emailRef.current.value,
+        username: usernameRef.current.value,
         password: passwordRef.current.value,
       };
       dispatch(onLogin(user));
@@ -45,13 +45,16 @@ const LoginForm = (props: Props) => {
                 Ingrese su cuenta
               </p>
               <div className="flex flex-col items-center gap-y-4">
-                <Label htmlFor="mail" value="Your email" className="w-full" />
+                <Label
+                  htmlFor="username"
+                  value="Your username"
+                  className="w-full"
+                />
                 <TextInput
-                  id="mail"
-                  type="email"
-                  placeholder="name@gmail.com"
+                  id="username"
+                  placeholder="jhon123"
                   required
-                  ref={emailRef}
+                  ref={usernameRef}
                   className="w-full"
                 />
                 <Label
