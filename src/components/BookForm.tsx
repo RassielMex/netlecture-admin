@@ -31,9 +31,12 @@ const BookForm = () => {
   const loading = useAppSelector((state) => {
     return state.books.loading;
   });
+  const token = useAppSelector((state) => {
+    return state.login.accessToken;
+  });
   const [rateValue, setRateValue] = useState(book?.rate || 1);
   const [selectedURLImage, setSelectedURLImage] = useState<string>(
-    book?.imgURL || ""
+    book?.image || ""
   );
   const handleRateValueChange = (value: number) => {
     setRateValue(value);
@@ -44,16 +47,16 @@ const BookForm = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(getBookById(id));
+      dispatch(getBookById(id, token));
     }
-  }, [id, dispatch]);
+  }, [id, token, dispatch]);
 
   const validationSchema: Yup.Schema<IForm> = Yup.object({
     title: Yup.string().required("El Titulo es requerido"),
     author: Yup.string().required("El Autor es requerido"),
     summary: Yup.string()
       .optional()
-      .length(200, "Longitud debe ser menor a 200 caracteres"),
+      .max(200, "Longitud debe ser menor a 200 caracteres"),
     grade: Yup.string().required(),
     enableImageUpload: Yup.boolean().required(),
     image: Yup.mixed<File>().when("enableImageUpload", {
@@ -140,9 +143,9 @@ const BookForm = () => {
                     />
                     <Label htmlFor="grade" value="Grado:" />
                     <Select id="grade" {...formik.getFieldProps("grade")}>
-                      <option value={"Primero"}>Primero</option>
-                      <option value={"Segundo"}>Segundo</option>
-                      <option value={"Tercero"}>Tercero</option>
+                      <option value={"1ro"}>Primero</option>
+                      <option value={"2do"}>Segundo</option>
+                      <option value={"3ro"}>Tercero</option>
                     </Select>
                     {formik.touched.grade && formik.errors.grade && (
                       <p className="text-red-500">{formik.errors.grade}</p>
