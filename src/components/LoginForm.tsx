@@ -36,7 +36,7 @@ const LoginForm = (props: Props) => {
   return (
     <>
       {isLoggedIn ? (
-        <Navigate to={"/"} replace />
+        <Navigate to={"/admin"} replace />
       ) : (
         <div className="shadow-md min-w-max w-1/4 bg-white p-8 rounded-md">
           <div className="flex flex-col justify-center h-full">
