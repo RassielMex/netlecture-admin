@@ -1,8 +1,8 @@
 import { MdOutlineAdd } from "react-icons/md";
 import React, { MouseEventHandler, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { emptyDetailedBook, getBooks } from "../store/slices/books-slice";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { emptyDetailedBook, getBooks } from "../../store/slices/books-slice";
 import BookTable from "./BookTable";
 import { Button, Spinner } from "flowbite-react";
 

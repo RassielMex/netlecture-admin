@@ -1,4 +1,4 @@
-import { BookFromAPI } from "../models/Book";
+import { BookFromAPI } from "../../models/Book";
 import { useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";

@@ -9,17 +9,17 @@ import {
 } from "flowbite-react";
 import { FaBook } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { getBookById } from "../store/slices/books-slice";
+import { getBookById } from "../../store/slices/books-slice";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import Rate from "./Rate";
+import Rate from "../Rate";
 import {
   getValidExtensions,
   isValidFileType,
-} from "../utils/ValidFileExtensions";
-import { IForm } from "../models/Form";
+} from "../../utils/ValidFileExtensions";
+import { IForm } from "../../models/Form";
 
 const BookForm = () => {
   let { id } = useParams();

@@ -1,12 +1,12 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import BooksContainer from "../components/BooksContainer";
+import BooksContainer from "../components/Books/BooksContainer";
 import Login from "../views/Login";
 import Main from "../views/Main";
 import RequiresLogin from "./RequiresLogin";
-import BookForm from "../components/BookForm";
-import AuthorsContainer from "../components/AuthorsContainer";
-import GenresContainer from "../components/GenresContainer";
+import BookForm from "../components/Books/BookForm";
+import AuthorsContainer from "../components/Authors/AuthorsContainer";
+import GenresContainer from "../components/Genres/GenresContainer";
 
 export const router = createBrowserRouter([
   {
