@@ -54,7 +54,7 @@ export const onLogin = (user: User) => {
   return async (dispatch: AppDispatch) => {
     try {
       const request = await axios.post(
-        "https://netlecture-api.vercel.app/user/token/",
+        process.env.REACT_APP_API_BASE + "/user/token/",
         user
       );
       if ((request.status = 200)) {
