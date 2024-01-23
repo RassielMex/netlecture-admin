@@ -17,10 +17,13 @@ const BooksContainer = (props: Props) => {
   const loading = useAppSelector((state) => {
     return state.books.loading;
   });
+  const token = useAppSelector((state) => {
+    return state.login.accessToken;
+  });
 
   useEffect(() => {
-    dispatch(getBooks());
-  }, [dispatch]);
+    dispatch(getBooks(token));
+  }, [dispatch, token]);
 
   const navigate = useNavigate();
   const handleAdd: MouseEventHandler = () => {
