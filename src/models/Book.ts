@@ -2,9 +2,9 @@ import { IAuthor } from "./Author";
 import { IGenre } from "./Genre";
 
 export enum grade {
-  First = "PRIMERO",
-  Second = "SEGUNDO",
-  Third = "TERCERO",
+  First = "1ro",
+  Second = "2do",
+  Third = "3ero",
 }
 
 export interface IBook {
@@ -18,7 +18,7 @@ export interface IBook {
 }
 
 export interface BookFromAPI extends IBook {
-  imgURL?: string;
+  image?: string;
 }
 
 export interface BookFromUser extends IBook {
