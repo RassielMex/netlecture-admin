@@ -58,12 +58,16 @@ export const BooksSlice = createSlice({
   },
 });
 
-export const getBooks = () => {
+export const getBooks = (token: string) => {
   return async (dispatch: AppDispatch) => {
-    dispatch(onRequest());
     try {
       const { data } = await axios.get<BookFromAPI[]>(
-        "https://localhost:7009/api/books"
+        process.env.REACT_APP_API_BASE + "/api/books/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       //console.log(data);
       dispatch(replaceBooks(data));
@@ -78,12 +82,17 @@ export const getBooks = () => {
   };
 };
 
-export const getBookById = (id: string) => {
+export const getBookById = (id: string, token: string) => {
   return async (dispatch: AppDispatch) => {
     dispatch(onRequest());
     try {
       const { data } = await axios.get<BookFromAPI>(
-        `https://localhost:7009/api/books/${id}`
+        process.env.REACT_APP_API_BASE + `/api/book/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       //console.log(data);
       dispatch(replaceDetailedBook(data));
