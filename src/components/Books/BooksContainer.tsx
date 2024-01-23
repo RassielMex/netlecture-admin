@@ -28,7 +28,7 @@ const BooksContainer = (props: Props) => {
   const navigate = useNavigate();
   const handleAdd: MouseEventHandler = () => {
     dispatch(emptyDetailedBook());
-    navigate("add", { replace: false });
+    navigate("book/add", { replace: false });
   };
 
   return (

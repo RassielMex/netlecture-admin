@@ -12,7 +12,7 @@ const BookTable = (props: Props) => {
 
   const navigate = useNavigate();
   const handleEdit = (id: string) => {
-    navigate(`edit/${id}`);
+    navigate(`book/${id}`);
   };
 
   return (
