@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { emptyDetailedBook, getBooks } from "../../store/slices/books-slice";
 import BookTable from "./BookTable";
 import { Button, Spinner } from "flowbite-react";
+import { requestNewToken } from "../../store/slices/login-slice";
 
 type Props = {};
 
@@ -20,10 +21,18 @@ const BooksContainer = (props: Props) => {
   const token = useAppSelector((state) => {
     return state.login.accessToken;
   });
-
+  const refresh = useAppSelector((state) => {
+    return state.login.refreshToken;
+  });
+  const loginDate = useAppSelector((state) => {
+    return state.login.loginDate;
+  });
   useEffect(() => {
     dispatch(getBooks(token));
   }, [dispatch, token]);
+  useEffect(() => {
+    dispatch(requestNewToken(refresh, loginDate));
+  }, [refresh, loginDate, dispatch]);
 
   const navigate = useNavigate();
   const handleAdd: MouseEventHandler = () => {
