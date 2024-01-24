@@ -11,6 +11,8 @@ interface LoginState {
   message: string;
   accessToken: string;
   refreshToken: string;
+  loading: boolean;
+  loginDate: number;
 }
 
 // Define the initial state using that type
@@ -20,6 +22,8 @@ const initialState: LoginState = {
   message: "",
   accessToken: "",
   refreshToken: "",
+  loading: false,
+  loginDate: 0,
 };
 
 export const loginSlice = createSlice({
@@ -29,22 +33,39 @@ export const loginSlice = createSlice({
   reducers: {
     logSuccess: (
       state,
-      action: PayloadAction<{ accessToken: string; refreshToken: string }>
+      action: PayloadAction<{
+        accessToken: string;
+        refreshToken: string;
+        loginDate: number;
+      }>
     ) => {
       state.isLoggedIn = true;
       state.error = false;
-      state.message = "";
+      state.message = "Success";
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
+      state.loginDate = action.payload.loginDate;
     },
     logError: (state, action: PayloadAction<string>) => {
       state.error = true;
       state.message = action.payload;
+      state.loading = false;
     },
     logOut: (state) => {
       state.isLoggedIn = false;
       state.error = false;
       state.message = "";
+      state.loading = false;
+    },
+    onRequest: (state) => {
+      state.loading = true;
+    },
+    replaceToken: (
+      state,
+      action: PayloadAction<{ accesToken: string; refreshDate: number }>
+    ) => {
+      state.accessToken = action.payload.accesToken;
+      state.loginDate = action.payload.refreshDate;
     },
   },
 });
@@ -52,16 +73,18 @@ export const loginSlice = createSlice({
 // Other code such as selectors can use the imported `RootState` type
 export const onLogin = (user: User) => {
   return async (dispatch: AppDispatch) => {
+    dispatch(onRequest());
     try {
       const request = await axios.post(
         process.env.REACT_APP_API_BASE + "/user/token/",
         user
       );
-      if ((request.status = 200)) {
+      if (request.status === 200) {
         dispatch(
           logSuccess({
             accessToken: request.data?.access,
             refreshToken: request.data?.refresh,
+            loginDate: Date.now(),
           })
         );
       }
@@ -74,6 +97,32 @@ export const onLogin = (user: User) => {
   };
 };
 
-export const { logSuccess, logOut, logError } = loginSlice.actions;
+export const requestNewToken = (refreshToken: string, loginDate: number) => {
+  return async (dispatch: AppDispatch) => {
+    if (Date.now() - loginDate >= 3600000) {
+      console.log("new token...");
+      try {
+        const request = await axios.post(
+          process.env.REACT_APP_API_BASE + "/user/token/refresh/",
+          { refresh: refreshToken }
+        );
+        if (request.status === 200) {
+          console.log(request.data);
+          dispatch(
+            replaceToken({
+              accesToken: request.data?.access,
+              refreshDate: Date.now(),
+            })
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+};
+
+export const { logSuccess, logOut, logError, onRequest, replaceToken } =
+  loginSlice.actions;
 
 export default loginSlice.reducer;
