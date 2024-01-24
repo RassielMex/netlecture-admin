@@ -1,9 +1,9 @@
 import React from "react";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch } from "../../hooks/hooks";
 import { Checkbox, Dropdown, Label } from "flowbite-react";
 import { FunnelIcon } from "@heroicons/react/24/solid";
-import { grade } from "../models/Book";
-import { setFilters } from "../store/slices/books-slice";
+import { grade } from "../../models/Book";
+import { setFilters } from "../../store/slices/books-slice";
 
 type Props = {};
 

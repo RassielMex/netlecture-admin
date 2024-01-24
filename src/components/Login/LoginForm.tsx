@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { User } from "../models/User";
-import { onLogin } from "../store/slices/login-slice";
-import { RootState } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { User } from "../../models/User";
+import { onLogin } from "../../store/slices/login-slice";
+import { RootState } from "../../store/store";
 import { FormEvent, useRef } from "react";
 import { Button, Label, TextInput } from "flowbite-react";
 

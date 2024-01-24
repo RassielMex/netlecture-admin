@@ -1,7 +1,7 @@
-import FilterMenu from "./FilterMenu";
+import FilterMenu from "../Books/FilterMenu";
 import SearchBar from "./SearchBar";
-import { useAppDispatch } from "../hooks/hooks";
-import { logOut } from "../store/slices/login-slice";
+import { useAppDispatch } from "../../hooks/hooks";
+import { logOut } from "../../store/slices/login-slice";
 import { Button, Navbar } from "flowbite-react";
 import { MouseEventHandler } from "react";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";

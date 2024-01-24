@@ -14,7 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getBookById } from "../../store/slices/books-slice";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import Rate from "../Rate";
+import Rate from "../shared/Rate";
 import {
   getValidExtensions,
   isValidFileType,

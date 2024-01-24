@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import MainAppBar from "../components/MainAppBar";
+import MainAppBar from "../components/shared/MainAppBar";
 import { Sidebar } from "flowbite-react";
 
 type Props = {};
