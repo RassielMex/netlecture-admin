@@ -40,7 +40,7 @@ export const BooksSlice = createSlice({
     },
     onSuccess: (state) => {
       state.loading = false;
-      state.message = "";
+      state.message = "Request Success";
       state.error = false;
     },
     replaceBooks: (state, action: PayloadAction<BookFromAPI[]>) => {
@@ -103,12 +103,19 @@ export const getBookById = (id: string, token: string) => {
   };
 };
 
-export const onDelete = (id: string) => {
+export const onDelete = (id: string, token: string) => {
   return async (dispatch: AppDispatch) => {
     dispatch(onRequest());
     try {
-      const request = await axios.delete("");
-      if (request.status === 400) {
+      const request = await axios.delete(
+        process.env.REACT_APP_API_BASE + `/api/book/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (request.status === 204) {
         dispatch(onSuccess());
       }
     } catch (error) {
